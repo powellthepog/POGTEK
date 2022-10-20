@@ -55,3 +55,32 @@ deb http://security.ubuntu.com/ubuntu focal-security multiverse
 # entries were disabled at the end of the installation process.
 # For information about how to configure apt package sources,
 # see the sources.list(5) manual.
+
+
+Yes, this is an ancient question, but the "got it to work" answer isn't correct.
+
+sudo nano /etc/apt/sources.list
+
+append these to the bottom of the file
+
+deb [arch=arm64] http://ports.ubuntu.com/ focal main multiverse universe
+
+deb [arch=arm64] http://ports.ubuntu.com/ focal-security main multiverse universe
+
+deb [arch=arm64] http://ports.ubuntu.com/ focal-backports main multiverse universe
+
+deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main multiverse universe
+
+Exit and save.
+
+sudo dpkg --print-foreign-architectures
+
+sudo dpkg --add-architecture arm64
+
+sudo dpkg --print-foreign-architectures
+
+You should now see arm64 in your list of foreign architectures
+
+sudo apt-get update
+
+You should see quite a few arm64 entries listed. There will be a few "404 not found" as repos move around. The problem is that many of the development packages for arm64 (notably libx11-dev) are in "ports"
